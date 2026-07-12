@@ -265,8 +265,6 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float))); // params: location, vector size, datatype, isNormalized, stride, offset
 	glEnableVertexAttribArray(1);
 
-	//test
-
 
 	///////// SHADERS ///////////
 
