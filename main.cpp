@@ -24,7 +24,8 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float prevFrame = 0.0f;
 
-
+// lighting
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 // Refreshes viewport to match frame buffer size (usually window dimentions)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -266,10 +267,22 @@ int main()
 	glEnableVertexAttribArray(1);
 
 
+	unsigned int lampVAO;
+	glGenVertexArrays(1, &lampVAO);
+	glBindVertexArray(lampVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+
 	///////// SHADERS ///////////
 
 
 	Shader ourShader("shader.vs", "shader.fs");
+
+	Shader lightingShader("lighting.vs", "lighting.fs");
+	Shader lampShader("lamp.vs", "lamp.fs");
 
 
 	///////// TEXTURES ///////////
@@ -282,9 +295,9 @@ int main()
 	tex2.bind(1);
 	tex2.loadTexture("textures/cat.png", GL_REPEAT, GL_RGB, GL_UNSIGNED_BYTE);
 
-	ourShader.use(); // don't forget to activate the shader before setting uniforms!  
-	ourShader.setInt("texture1", 0);
-	ourShader.setInt("texture2", 1);
+	lightingShader.use(); // don't forget to activate the shader before setting uniforms!  
+	lightingShader.setInt("texture1", 0);
+	lightingShader.setInt("texture2", 1);
 
 
 	///////// TRANSFORMATIONS ///////////
@@ -318,21 +331,18 @@ int main()
 		prevFrame = currentFrame;
 
 		// Set dynamic values to  uniforms via the custom shader class
-		ourShader.use();
-		ourShader.setFloat("positionOffset", sin(timeValue));
-		ourShader.setFloat("timeValue", timeValue);
-		ourShader.setFloat("mixValue", mixValue);
+		lightingShader.use();
+		lightingShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+		lightingShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 
-		glm::mat4 viewMatrix;
-		viewMatrix = camera.GetViewMatrix();
-
+		glm::mat4 viewMatrix = camera.GetViewMatrix();
 		glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.zoom), (float)800 / (float)600, 0.1f, 100.0f);
 
 		// Send data to the uniforms
-		ourShader.use();
-		unsigned int modelMatrixLocation = glGetUniformLocation(ourShader.ID, "modelMatrix");
-		unsigned int viewMatrixLocation = glGetUniformLocation(ourShader.ID, "viewMatrix");
-		unsigned int projectionMatrixLocation = glGetUniformLocation(ourShader.ID, "projectionMatrix");
+		lightingShader.use();
+		unsigned int modelMatrixLocation = glGetUniformLocation(lightingShader.ID, "modelMatrix");
+		unsigned int viewMatrixLocation = glGetUniformLocation(lightingShader.ID, "viewMatrix");
+		unsigned int projectionMatrixLocation = glGetUniformLocation(lightingShader.ID, "projectionMatrix");
 		
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
@@ -356,7 +366,20 @@ int main()
 
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 		}
-		
+
+		// also draw the lamp object
+		lampShader.use();
+		lampShader.setMatrix4("projectionMatrix", projectionMatrix);
+		lampShader.setMatrix4("viewMatrix", viewMatrix);
+		glm::mat4 modelMatrix = glm::mat4(1.0f);
+		modelMatrix = glm::translate(modelMatrix, lightPos);
+		modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f)); // a smaller cube
+		lampShader.setMatrix4("modelMatrix", modelMatrix);
+
+		glBindVertexArray(lampVAO);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+
 		glBindVertexArray(0); //Remove binding
 
 		glfwSwapBuffers(window); // using double buffer prevents flickering
