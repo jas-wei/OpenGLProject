@@ -36,7 +36,8 @@ struct SpotLight {
     vec3 diffuse;
     vec3 specular;
 	
-    float cutoff;
+    float innerCutoff;
+	float outerCutoff;
 }; 
 
 in vec3 worldPosition;
@@ -110,25 +111,20 @@ vec3 calculatePointLight(PointLight pointLight){
 
 
 vec3 calculateSpotLight(SpotLight spotLight){
-	vec3 fragDirection = normalize(worldPosition - spotLight.position);
-	float angle = dot(normalize(spotLight.direction), fragDirection);
-	float normalDotLight = dot(worldNormal, -fragDirection);
-	
-	vec3 result;
-	if(normalDotLight >= 0.0 && angle > spotLight.cutoff){
-		result = vec3(texture(material.diffuseMap, TexCoords));
-	} 
-	else {
-		result = spotLight.ambient;
-	}
+	//calcuate spotlight intensity using formula (theta - gamma / epsilon)
+	vec3 lightDir = normalize(spotLight.position - worldPosition);
 
-	return result;
+	float theta = dot(lightDir, normalize(- spotLight.direction));
+	float epsilon = spotLight.innerCutoff - spotLight.outerCutoff;
+	float intensity = clamp((theta - spotLight.outerCutoff) / epsilon, 0.0, 1.0);
+
+	return calculateBlinPhong(lightDir) * intensity;
 }
 
 
 
 void main(){
-	
+	//vec3 result = calculateBlinPhong(normalize(pointLight.position - worldPosition));
 	//vec3 result = calculateDirectionalLight(directionalLight);
 	//vec3 result = calculatePointLight(pointLight);
 	vec3 result = calculateSpotLight(spotLight);

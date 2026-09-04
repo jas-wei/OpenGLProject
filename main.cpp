@@ -309,16 +309,16 @@ int main()
 	lightingShader.setInt("material.emissionMap", 2);
 	lightingShader.setFloat("material.shininess", 200.0f);
 
-	lightingShader.setFloat3("directionalLight.ambientColor", 0.5f, 0.5f, 0.5f);
-	lightingShader.setFloat3("directionalLight.diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setFloat3("directionalLight.specularColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("directionalLight.ambient", 0.5f, 0.5f, 0.5f);
+	lightingShader.setFloat3("directionalLight.diffuse", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("directionalLight.specular", 1.0f, 1.0f, 1.0f);
 	lightingShader.setFloat4("directionalLight.lightVector", lightDir.x, lightDir.y, lightDir.z, lightDir.w);
 
 	// for more ways to configure point light attenuation, refer to this website: https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
 	lightingShader.setFloat3("pointLight.position", lightPos.x, lightPos.y, lightPos.z);
-	lightingShader.setFloat3("pointLight.ambientColor", 0.5f, 0.5f, 0.5f);
-	lightingShader.setFloat3("pointLight.diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setFloat3("pointLight.specularColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("pointLight.ambient", 0.5f, 0.5f, 0.5f);
+	lightingShader.setFloat3("pointLight.diffuse", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("pointLight.specular", 1.0f, 1.0f, 1.0f);
 	lightingShader.setFloat("pointLight.constant", 1.0f);
 	lightingShader.setFloat("pointLight.linear", 0.09f);
 	lightingShader.setFloat("pointLight.quadratic", 0.032f);
@@ -326,10 +326,11 @@ int main()
 	// for more ways to configure point light attenuation, refer to this website: https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
 	lightingShader.setFloat3("spotLight.position", lightPos.x, lightPos.y, lightPos.z);
 	lightingShader.setFloat3("spotLight.direction", lightDir.x, lightDir.y, lightDir.z);
-	lightingShader.setFloat("spotLight.cutoff", glm::cos(glm::radians(12.5f)));
-	lightingShader.setFloat3("spotLight.ambientColor", 0.5f, 0.5f, 0.5f);
-	lightingShader.setFloat3("spotLight.diffuseColor", 1.0f, 1.0f, 1.0f);
-	lightingShader.setFloat3("spotLight.specularColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat("spotLight.innerCutoff", glm::cos(glm::radians(12.5f)));
+	lightingShader.setFloat("spotLight.outerCutoff", glm::cos(glm::radians(17.5f)));
+	lightingShader.setFloat3("spotLight.ambient", 0.5f, 0.5f, 0.5f);
+	lightingShader.setFloat3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("spotLight.specular", 1.0f, 1.0f, 1.0f);
 
 
 
