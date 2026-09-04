@@ -83,5 +83,14 @@
     <Image Include="textures\cat.png">
       <Filter>Textures</Filter>
     </Image>
+    <Image Include="textures\container2.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="textures\container2_specular.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="textures\matrix.jpg">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

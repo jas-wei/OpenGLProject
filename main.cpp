@@ -26,6 +26,7 @@ float prevFrame = 0.0f;
 
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec4 lightDir(0.0f, 0.0f, -1.0f, 0.0f);
 
 // Refreshes viewport to match frame buffer size (usually window dimentions)
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -161,43 +162,43 @@ int main()
 
 
 	float vertices[] = {
-		// positions              // tex coords
+		// positions            // normals           // tex coords
 
 		// Front (+Z)
-		-0.5f,-0.5f, 0.5f,   0.0f,0.0f, //0
-		 0.5f,-0.5f, 0.5f,   1.0f,0.0f, //1
-		 0.5f, 0.5f, 0.5f,   1.0f,1.0f, //2
-		-0.5f, 0.5f, 0.5f,   0.0f,1.0f, //3
+		-0.5f,-0.5f, 0.5f,     0.0f, 0.0f, 1.0f,    0.0f,0.0f, // 0
+		 0.5f,-0.5f, 0.5f,     0.0f, 0.0f, 1.0f,    1.0f,0.0f, // 1
+		 0.5f, 0.5f, 0.5f,     0.0f, 0.0f, 1.0f,    1.0f,1.0f, // 2
+		-0.5f, 0.5f, 0.5f,     0.0f, 0.0f, 1.0f,    0.0f,1.0f, // 3
 
 		// Back (-Z)
-		 0.5f,-0.5f,-0.5f,   0.0f,0.0f, //4
-		-0.5f,-0.5f,-0.5f,   1.0f,0.0f, //5
-		-0.5f, 0.5f,-0.5f,   1.0f,1.0f, //6
-		 0.5f, 0.5f,-0.5f,   0.0f,1.0f, //7
+		 0.5f,-0.5f,-0.5f,     0.0f, 0.0f,-1.0f,    0.0f,0.0f, // 4
+		-0.5f,-0.5f,-0.5f,     0.0f, 0.0f,-1.0f,    1.0f,0.0f, // 5
+		-0.5f, 0.5f,-0.5f,     0.0f, 0.0f,-1.0f,    1.0f,1.0f, // 6
+		 0.5f, 0.5f,-0.5f,     0.0f, 0.0f,-1.0f,    0.0f,1.0f, // 7
 
 		 // Left (-X)
-		 -0.5f,-0.5f,-0.5f,   0.0f,0.0f, //8
-		 -0.5f,-0.5f, 0.5f,   1.0f,0.0f, //9
-		 -0.5f, 0.5f, 0.5f,   1.0f,1.0f, //10
-		 -0.5f, 0.5f,-0.5f,   0.0f,1.0f, //11
+		 -0.5f,-0.5f,-0.5f,    -1.0f, 0.0f, 0.0f,    0.0f,0.0f, // 8
+		 -0.5f,-0.5f, 0.5f,    -1.0f, 0.0f, 0.0f,    1.0f,0.0f, // 9
+		 -0.5f, 0.5f, 0.5f,    -1.0f, 0.0f, 0.0f,    1.0f,1.0f, // 10
+		 -0.5f, 0.5f,-0.5f,    -1.0f, 0.0f, 0.0f,    0.0f,1.0f, // 11
 
 		 // Right (+X)
-		  0.5f,-0.5f, 0.5f,   0.0f,0.0f, //12
-		  0.5f,-0.5f,-0.5f,   1.0f,0.0f, //13
-		  0.5f, 0.5f,-0.5f,   1.0f,1.0f, //14
-		  0.5f, 0.5f, 0.5f,   0.0f,1.0f, //15
+		  0.5f,-0.5f, 0.5f,     1.0f, 0.0f, 0.0f,    0.0f,0.0f, // 12
+		  0.5f,-0.5f,-0.5f,     1.0f, 0.0f, 0.0f,    1.0f,0.0f, // 13
+		  0.5f, 0.5f,-0.5f,     1.0f, 0.0f, 0.0f,    1.0f,1.0f, // 14
+		  0.5f, 0.5f, 0.5f,     1.0f, 0.0f, 0.0f,    0.0f,1.0f, // 15
 
 		  // Bottom (-Y)
-		  -0.5f,-0.5f,-0.5f,   0.0f,0.0f, //16
-		   0.5f,-0.5f,-0.5f,   1.0f,0.0f, //17
-		   0.5f,-0.5f, 0.5f,   1.0f,1.0f, //18
-		  -0.5f,-0.5f, 0.5f,   0.0f,1.0f, //19
+		  -0.5f,-0.5f,-0.5f,     0.0f,-1.0f, 0.0f,    0.0f,0.0f, // 16
+		   0.5f,-0.5f,-0.5f,     0.0f,-1.0f, 0.0f,    1.0f,0.0f, // 17
+		   0.5f,-0.5f, 0.5f,     0.0f,-1.0f, 0.0f,    1.0f,1.0f, // 18
+		  -0.5f,-0.5f, 0.5f,     0.0f,-1.0f, 0.0f,    0.0f,1.0f, // 19
 
 		  // Top (+Y)
-		  -0.5f, 0.5f, 0.5f,   0.0f,0.0f, //20
-		   0.5f, 0.5f, 0.5f,   1.0f,0.0f, //21
-		   0.5f, 0.5f,-0.5f,   1.0f,1.0f, //22
-		  -0.5f, 0.5f,-0.5f,   0.0f,1.0f  //23
+		  -0.5f, 0.5f, 0.5f,     0.0f, 1.0f, 0.0f,    0.0f,0.0f, // 20
+		   0.5f, 0.5f, 0.5f,     0.0f, 1.0f, 0.0f,    1.0f,0.0f, // 21
+		   0.5f, 0.5f,-0.5f,     0.0f, 1.0f, 0.0f,    1.0f,1.0f, // 22
+		  -0.5f, 0.5f,-0.5f,     0.0f, 1.0f, 0.0f,    0.0f,1.0f  // 23
 	};
 
 	unsigned int indices[] = {
@@ -260,11 +261,14 @@ int main()
 	
 	// Create a vertex array object, a memory block that stores how vertex attributes should be read from the VBO
 	// glVertexAttribPointer assigns the attribute mapping (pos, uvs, etc) for the actively bound VAO 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // params: location, vector size, datatype, isNormalized, stride, offset
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // params: location, vector size, datatype, isNormalized, stride, offset
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3*sizeof(float))); // params: location, vector size, datatype, isNormalized, stride, offset
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // params: location, vector size, datatype, isNormalized, stride, offset
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6*sizeof(float))); // params: location, vector size, datatype, isNormalized, stride, offset
+	glEnableVertexAttribArray(2);
 
 
 	unsigned int lampVAO;
@@ -272,7 +276,7 @@ int main()
 	glBindVertexArray(lampVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 
@@ -287,17 +291,46 @@ int main()
 
 	///////// TEXTURES ///////////
 
-	Texture tex1, tex2 = Texture();
+	Texture tex1, tex2, tex3 = Texture();
 	
 	tex1.bind(0);
-	tex1.loadTexture("textures/container.jpg", GL_REPEAT, GL_RGB, GL_UNSIGNED_BYTE);
+	tex1.loadTexture("textures/container2.png", GL_REPEAT, GL_RGBA, GL_UNSIGNED_BYTE);
 
 	tex2.bind(1);
-	tex2.loadTexture("textures/cat.png", GL_REPEAT, GL_RGB, GL_UNSIGNED_BYTE);
+	tex2.loadTexture("textures/container2_specular.png", GL_REPEAT, GL_RGBA, GL_UNSIGNED_BYTE);
+
+	tex3.bind(1);
+	tex3.loadTexture("textures/matrix.jpg", GL_REPEAT, GL_RGB, GL_UNSIGNED_BYTE);
 
 	lightingShader.use(); // don't forget to activate the shader before setting uniforms!  
-	lightingShader.setInt("texture1", 0);
-	lightingShader.setInt("texture2", 1);
+
+	lightingShader.setInt("material.diffuseMap", 0);
+	lightingShader.setInt("material.specularMap", 1);
+	lightingShader.setInt("material.emissionMap", 2);
+	lightingShader.setFloat("material.shininess", 200.0f);
+
+	lightingShader.setFloat3("directionalLight.ambientColor", 0.5f, 0.5f, 0.5f);
+	lightingShader.setFloat3("directionalLight.diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("directionalLight.specularColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat4("directionalLight.lightVector", lightDir.x, lightDir.y, lightDir.z, lightDir.w);
+
+	// for more ways to configure point light attenuation, refer to this website: https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
+	lightingShader.setFloat3("pointLight.position", lightPos.x, lightPos.y, lightPos.z);
+	lightingShader.setFloat3("pointLight.ambientColor", 0.5f, 0.5f, 0.5f);
+	lightingShader.setFloat3("pointLight.diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("pointLight.specularColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat("pointLight.constant", 1.0f);
+	lightingShader.setFloat("pointLight.linear", 0.09f);
+	lightingShader.setFloat("pointLight.quadratic", 0.032f);
+
+	// for more ways to configure point light attenuation, refer to this website: https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
+	lightingShader.setFloat3("spotLight.position", lightPos.x, lightPos.y, lightPos.z);
+	lightingShader.setFloat3("spotLight.direction", lightDir.x, lightDir.y, lightDir.z);
+	lightingShader.setFloat("spotLight.cutoff", glm::cos(glm::radians(12.5f)));
+	lightingShader.setFloat3("spotLight.ambientColor", 0.5f, 0.5f, 0.5f);
+	lightingShader.setFloat3("spotLight.diffuseColor", 1.0f, 1.0f, 1.0f);
+	lightingShader.setFloat3("spotLight.specularColor", 1.0f, 1.0f, 1.0f);
+
 
 
 	///////// TRANSFORMATIONS ///////////
@@ -330,10 +363,18 @@ int main()
 		deltaTime = currentFrame - prevFrame;
 		prevFrame = currentFrame;
 
+		//Set shifting rainbow tint
+		float redValue = glm::sin(timeValue ) * 0.5 + 0.5;
+		float greenValue = glm::sin(timeValue + ((glm::two_pi<float>() / 3))  * 0.5 + 0.5);
+		float blueValue = glm::sin(timeValue + ((glm::two_pi<float>() / 3 * 2)) * 0.5 + 0.5);
+
+		lightingShader.use();
+		lightingShader.setFloat3("tint", redValue, greenValue, blueValue);
+
+
 		// Set dynamic values to  uniforms via the custom shader class
 		lightingShader.use();
-		lightingShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
-		lightingShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
+		lightingShader.setFloat3("cameraPos", camera.cameraPos.x, camera.cameraPos.y, camera.cameraPos.z);
 
 		glm::mat4 viewMatrix = camera.GetViewMatrix();
 		glm::mat4 projectionMatrix = glm::perspective(glm::radians(camera.zoom), (float)800 / (float)600, 0.1f, 100.0f);
@@ -350,6 +391,7 @@ int main()
 		// Set texture units to active and bind them to the active texture
 		tex1.bind(0);
 		tex2.bind(1);
+		tex3.bind(2);
 
 		// Draw cube from vertex element
 		glBindVertexArray(VAO);
