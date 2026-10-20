@@ -2,6 +2,8 @@
 
 A small OpenGL project created for learning computer graphics and the fundamentals of real-time rendering. The project was heavily guided by the tutorials from [LearnOpenGL](https://learnopengl.com/), with some experimentation and modifications as I worked through the concepts.
 
+<img src="images/Maru_Rotation.gif" width="700">
+
 ## Features
 
 - OpenGL 3.3 Core
