@@ -16,6 +16,9 @@
     <Filter Include="Textures">
       <UniqueIdentifier>{cbcfd054-e156-47f7-b8f1-acf930bbfc5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{a4f2889a-a129-4809-a8ec-6a6a02f4f1c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\glad.c">
@@ -28,9 +31,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +47,10 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="texture.h">
+    <ClInclude Include="mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -75,6 +78,10 @@
     <None Include="lamp.fs">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="backpack.mtl">
+      <Filter>Models</Filter>
+    </None>
+    <None Include="models\backpack.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="textures\container.jpg">
@@ -92,5 +99,26 @@
     <Image Include="textures\matrix.jpg">
       <Filter>Textures</Filter>
     </Image>
+    <Image Include="models\ao.jpg">
+      <Filter>Models</Filter>
+    </Image>
+    <Image Include="models\specular.jpg">
+      <Filter>Models</Filter>
+    </Image>
+    <Image Include="models\roughness.jpg">
+      <Filter>Models</Filter>
+    </Image>
+    <Image Include="models\normal.png">
+      <Filter>Models</Filter>
+    </Image>
+    <Image Include="models\diffuse.jpg">
+      <Filter>Models</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="source_attribution.txt">
+      <Filter>Models</Filter>
+    </Text>
+    <Text Include="models\source_attribution.txt" />
   </ItemGroup>
 </Project>

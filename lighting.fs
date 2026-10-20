@@ -1,9 +1,8 @@
 #version 330 core
 
 struct Material {
-	sampler2D diffuseMap;
-	sampler2D specularMap;
-	sampler2D emissionMap;
+	sampler2D texture_diffuse1;
+	sampler2D texture_specular1;
 
 	float shininess;
 };
@@ -64,22 +63,22 @@ vec3 customRelfect(vec3 nIncidentDir, vec3 nNormal){
 //Blin Phong lighting calculates specular light better than Phong becuase it doesnt remove specular contributions at extreme angles
 vec3 calculateBlinPhong(vec3 lightDir){
 	// ambient
-	vec3 finalAmbientColor = vec3(texture(material.diffuseMap, TexCoords)) * directionalLight.ambient;
+	vec3 finalAmbientColor = vec3(texture(material.texture_diffuse1, TexCoords)) * directionalLight.ambient;
 
 	// diffuse
 	vec3 nNormal = normalize(worldNormal);
-	vec3 finalDiffuseColor = vec3(texture(material.diffuseMap, TexCoords)) * directionalLight.diffuse * max(dot(nNormal, lightDir), 0.0);
+	vec3 finalDiffuseColor = vec3(texture(material.texture_diffuse1, TexCoords)) * directionalLight.diffuse * max(dot(nNormal, lightDir), 0.0);
 
 	// specular
 	vec3 nViewDir = normalize(cameraPos - worldPosition);
 	vec3 nHalfwayDir = normalize(lightDir + nViewDir);
 	float specular = pow(max(dot(nNormal, nHalfwayDir), 0.0), material.shininess);
-	vec3 finalSpecularColor = specular * vec3(texture(material.specularMap, TexCoords)) * directionalLight.specular;
+	vec3 finalSpecularColor = specular * vec3(texture(material.texture_specular1, TexCoords)) * directionalLight.specular;
 
 	//emission
-	vec3 colorEmissionMap = texture(material.emissionMap, TexCoords).rgb;
-	vec3 grayscaleEmissionMap = vec3(dot(colorEmissionMap, vec3(0.299, 0.587, 0.114)));
-	vec3 emission = grayscaleEmissionMap * tint;
+	//vec3 colorEmissionMap = texture(material.emissionMap, TexCoords).rgb;
+	//vec3 grayscaleEmissionMap = vec3(dot(colorEmissionMap, vec3(0.299, 0.587, 0.114)));
+	//vec3 emission = grayscaleEmissionMap * tint;
 
 	// sum up result
 	vec3 result = finalAmbientColor + finalDiffuseColor + finalSpecularColor;
@@ -124,10 +123,10 @@ vec3 calculateSpotLight(SpotLight spotLight){
 
 
 void main(){
-	//vec3 result = calculateBlinPhong(normalize(pointLight.position - worldPosition));
+	vec3 result = calculateBlinPhong(normalize(pointLight.position - worldPosition));
 	//vec3 result = calculateDirectionalLight(directionalLight);
 	//vec3 result = calculatePointLight(pointLight);
-	vec3 result = calculateSpotLight(spotLight);
+	//vec3 result = calculateSpotLight(spotLight);
 
 	FragColor = vec4 (result, 1.0);
 }

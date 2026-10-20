@@ -106,11 +106,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\ProgrammingProjects\OpenGLDev\assimp\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\ProgrammingProjects\OpenGLDev\assimp\lib\Debug</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,14 +135,14 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stb_image.h" />
-    <ClInclude Include="texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OpenGLProject.rc" />
@@ -149,15 +152,26 @@
     <None Include="lamp.vs" />
     <None Include="lighting.fs" />
     <None Include="lighting.vs" />
+    <None Include="backpack.mtl" />
+    <None Include="models\backpack.mtl" />
     <None Include="shader.fs" />
     <None Include="shader.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="models\ao.jpg" />
+    <Image Include="models\diffuse.jpg" />
+    <Image Include="models\normal.png" />
+    <Image Include="models\roughness.jpg" />
+    <Image Include="models\specular.jpg" />
     <Image Include="textures\cat.png" />
     <Image Include="textures\container.jpg" />
     <Image Include="textures\container2.png" />
     <Image Include="textures\container2_specular.png" />
     <Image Include="textures\matrix.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="models\source_attribution.txt" />
+    <Text Include="source_attribution.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
