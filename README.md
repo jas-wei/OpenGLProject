@@ -27,39 +27,5 @@ A small OpenGL project created for learning computer graphics and the fundamenta
 - **stb_image** – texture loading
 - **Assimp** – importing 3D models
 
-## Project Structure
-
-```text
-main.cpp       - Initializes OpenGL, handles input, lighting, and the render loop
-shader.h       - Compiles shaders and provides helpers for setting uniforms
-camera.h       - Handles camera movement, rotation, and view matrices
-mesh.h         - Stores and renders individual meshes
-model.h        - Loads models with Assimp and converts them into Mesh objects
-lighting.vs    - Vertex shader
-lighting.fs    - Blinn-Phong lighting and material calculations
-models/        - Imported 3D models, materials, and textures
-```
-
-## Rendering Flow
-
-Without Assimp, vertex data, indices, textures, and VAO/VBO/EBO setup are created manually in `main.cpp`.
-
-With Assimp:
-
-```text
-Model File
-    ↓
-Assimp
-    ↓
-Model
-    ↓
-Mesh
-    ↓
-VAO / VBO / EBO + Textures
-    ↓
-Shader
-    ↓
-Render
-```
 
 The goal of this project is primarily to understand how the individual parts of a basic OpenGL renderer work rather than to build a complete rendering engine.
